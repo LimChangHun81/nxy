@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly.express as px
+# import plotly.express as px
 
 # ===== 📢 1. 페이지 타이틀 및 스타일 =====
 st.markdown("""
