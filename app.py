@@ -5,12 +5,6 @@ import time
 # ✅ 1. 페이지 설정 (가장 먼저 위치)
 st.set_page_config(page_title="Streamlit 기초 예제", layout="wide")
 
-# ✅ 2. 진행 바
-progress_bar = st.progress(0)
-for i in range(50):
-    time.sleep(0.01)
-    progress_bar.progress(i + 1)
-st.write("완료!")
 
 # ✅ 3. 제목 및 텍스트
 st.title("Streamlit 기초 예제")
@@ -38,3 +32,9 @@ st.dataframe(df)
 
 # ✅ 7. 차트 표시
 st.line_chart(df.set_index("이름")["나이"])
+# ✅ 2. 진행 바
+progress_bar = st.progress(0)
+for i in range(50):
+    time.sleep(0.01)
+    progress_bar.progress(i + 1)
+st.write("완료!")
