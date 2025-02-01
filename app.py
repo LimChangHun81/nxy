@@ -39,12 +39,12 @@ if show_chart:
     st.markdown("### 🚀 선택한 지수의 차트")
     st.line_chart(data[selected_index].iloc[range_val[0]:range_val[1]])
 
-# ===== 🔍 6. Plotly 고급 시각화 =====
-st.markdown("### 📊 고급 그래프 (Plotly)")
-fig = px.line(data, x=data.index, y=data.columns, title="📈 지수 비교 그래프")
-fig.update_traces(line=dict(width=3))  # 선 두께 조절
-fig.update_layout(title_font_size=18)  # 제목 폰트 크기
-st.plotly_chart(fig)
+# # ===== 🔍 6. Plotly 고급 시각화 =====
+# st.markdown("### 📊 고급 그래프 (Plotly)")
+# fig = px.line(data, x=data.index, y=data.columns, title="📈 지수 비교 그래프")
+# fig.update_traces(line=dict(width=3))  # 선 두께 조절
+# fig.update_layout(title_font_size=18)  # 제목 폰트 크기
+# st.plotly_chart(fig)
 
 # ===== ✅ 7. 버튼 기능 =====
 if st.button("📊 데이터 새로고침"):
