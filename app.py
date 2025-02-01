@@ -34,7 +34,14 @@ st.dataframe(df)
 # ✅ 7. 차트 표시
 st.line_chart(df.set_index("이름")["나이"])
 
-# 링크
-st.button("구글로 이동하기"):
-webbrowser.open_new_tab("https://www.google.com")
+data = {
+    "사이트": ["구글", "네이버"],
+    "링크": ["https://www.google.com", "https://www.naver.com"]
+}
+
+df = pd.DataFrame(data)
+
+# 링크를 클릭할 수 있도록 마크다운 처리
+for i in range(len(df)):
+    st.markdown(f"[{df['사이트'][i]}]({df['링크'][i]})")
 
