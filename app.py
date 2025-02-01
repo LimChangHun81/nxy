@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 # Install Plotly
-st.set_option('deprecation.showPyplotGlobalUse', False)
-!pip install plotly
+# st.set_option('deprecation.showPyplotGlobalUse', False)
+# !pip install plotly
 
 import plotly.express as px
 
