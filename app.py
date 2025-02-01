@@ -35,3 +35,4 @@ st.dataframe(df)
 st.line_chart(df.set_index("이름")["나이"])
 
 # st.markdown("[구글로 이동하기](https://www.google.com)")
+st.markdown('[구글로 이동하기](https://www.google.com)', unsafe_allow_html=True)
