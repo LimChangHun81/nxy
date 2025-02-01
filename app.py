@@ -41,7 +41,7 @@ st.markdown('[구글로 이동하기](https://www.google.com)', unsafe_allow_htm
 
 
 # 이미지 불러오기
-image = Image.open("example.jpg")  # 이미지 파일 경로
+image = Image.open("IMG_2773-2.jpg")  # 이미지 파일 경로
 
 # 이미지 표시 (400x400 크기)
 st.image(image, width=400, height=400)
