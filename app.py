@@ -35,5 +35,6 @@ st.dataframe(df)
 st.line_chart(df.set_index("이름")["나이"])
 
 # 링크
-if st.button("구글로 이동하기"):
-    webbrowser.open_new_tab("https://www.google.com")
+st.button("구글로 이동하기"):
+webbrowser.open_new_tab("https://www.google.com")
+
