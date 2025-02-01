@@ -5,7 +5,7 @@ import pandas as pd
 import time
 
 progress_bar = st.progress(0)
-for i in range(100):
+for i in range(50):
     time.sleep(0.01)
     progress_bar.progress(i + 1)
 st.write("완료!")
@@ -21,3 +21,6 @@ name = st.text_input("1. 이름을 입력하세요:")
 age = st.slider("2. 나이를 선택하세요", 0, 100, 25)
 if st.button("제출"):
     st.write(f"안녕하세요, {name}님! 나이는 {age}세입니다.")
+st.set_page_config(page_title="My App", layout="wide")
+st.balloons()
+st.snow()
