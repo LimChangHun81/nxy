@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import time
 import webbrowser
+from PIL import Image
+
 
 # ✅ 1. 페이지 설정 (가장 먼저 위치)
 st.set_page_config(page_title="Streamlit 기초 예제", layout="wide")
@@ -36,3 +38,10 @@ st.line_chart(df.set_index("이름")["나이"])
 
 # st.markdown("[구글로 이동하기](https://www.google.com)")
 st.markdown('[구글로 이동하기](https://www.google.com)', unsafe_allow_html=True)
+
+
+# 이미지 불러오기
+image = Image.open("example.jpg")  # 이미지 파일 경로
+
+# 이미지 표시 (400x400 크기)
+st.image(image, width=400, height=400)
