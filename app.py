@@ -22,5 +22,31 @@ age = st.slider("2. 나이를 선택하세요", 0, 100, 25)
 if st.button("제출"):
     st.write(f"안녕하세요, {name}님! 나이는 {age}세입니다.")
 st.set_page_config(page_title="My App", layout="wide")
-st.balloons()
-st.snow()
+import streamlit as st
+
+# 페이지 설정
+st.set_page_config(page_title="Streamlit 기초 예제", layout="wide")
+
+# 제목
+st.title("Streamlit 기초 예제")
+
+# 입력 위젯
+name = st.text_input("이름을 입력하세요:")
+age = st.slider("나이를 선택하세요", 0, 100, 25)
+
+# 버튼
+if st.button("제출"):
+    st.write(f"안녕하세요, {name}님! 나이는 {age}세입니다.")
+
+# 데이터프레임
+import pandas as pd
+data = {
+    "이름": ["Alice", "Bob", "Charlie"],
+    "나이": [25, 30, 35],
+    "도시": ["서울", "부산", "인천"]
+}
+df = pd.DataFrame(data)
+st.dataframe(df)
+
+# 차트
+st.line_chart(df.set_index("이름")["나이"])
