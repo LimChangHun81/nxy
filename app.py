@@ -59,12 +59,11 @@ st.line_chart(df.set_index("이름")["나이"])
 st.markdown('[구글로 이동하기](https://www.google.com)', unsafe_allow_html=True)
 
 
-# # 이미지 불러오기
-# image = Image.open("IMG_2773-2.jpg")  # 이미지 파일 경로
 
-# # 이미지 표시 (400x400 크기)
-# st.image(image, width=400, height=400)
-
+# 게시글 데이터를 저장할 파일 경로
+DATA_FILE = "posts.csv"
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def extract_youtube_thumbnail(url):
     match = re.search(r"(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)", url)
@@ -73,19 +72,26 @@ def extract_youtube_thumbnail(url):
         return f"https://img.youtube.com/vi/{video_id}/0.jpg"
     return None
 
-# 게시글 데이터를 저장할 리스트
-if 'posts' not in st.session_state:
-    st.session_state.posts = []
-
-# 파일 저장 폴더 설정
-UPLOAD_FOLDER = "uploads"
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
 def save_uploaded_file(uploaded_file):
     file_path = os.path.join(UPLOAD_FOLDER, uploaded_file.name)
     with open(file_path, "wb") as f:
         f.write(uploaded_file.getbuffer())
     return file_path
+
+# 게시글 데이터 불러오기
+def load_posts():
+    if os.path.exists(DATA_FILE):
+        return pd.read_csv(DATA_FILE).to_dict(orient="records")
+    return []
+
+# 게시글 데이터 저장하기
+def save_posts(posts):
+    df = pd.DataFrame(posts)
+    df.to_csv(DATA_FILE, index=False)
+
+# Streamlit 세션 초기화
+if "posts" not in st.session_state:
+    st.session_state.posts = load_posts()
 
 # 페이지 제목
 st.title("📌 간단한 게시판")
@@ -108,6 +114,7 @@ if st.button("게시하기"):
             "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         }
         st.session_state.posts.append(post)
+        save_posts(st.session_state.posts)  # CSV 파일에 저장
         st.success("게시글이 등록되었습니다!")
         st.rerun()
     else:
@@ -129,7 +136,7 @@ if st.session_state.posts:
                 with open(file_path, "rb") as file:
                     st.download_button(label=file_name, data=file, file_name=file_name)
                 
-                # 이미지 파일 미리보기
+                # 이미지 파일 미리보기 (400x400 제한)
                 if file_name.lower().endswith(('png', 'jpg', 'jpeg', 'gif', 'bmp')):
                     image = Image.open(file_path)
                     image = image.resize((400, 400))
