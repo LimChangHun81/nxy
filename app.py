@@ -7,14 +7,11 @@ import os
 from datetime import datetime
 import re
 
-
 # ✅ 1. 페이지 설정 (가장 먼저 위치)
 st.set_page_config(page_title="Streamlit 기초 예제", layout="wide")
 
-
 st.markdown("# Main page 🎈")
 st.sidebar.markdown("# Main page 🎈")
-
 
 # ✅ 3. 제목 및 텍스트
 st.title("Streamlit 기초 예제")
@@ -30,13 +27,9 @@ age = st.slider("나이를 선택하세요", 0, 100, 25)
 st.markdown("# Page 2 ❄️")
 st.sidebar.markdown("# Page 2 ❄️")
 
-
 # ✅ 5. 버튼 클릭 시 출력
 if st.button("제출"):
     st.write(f"안녕하세요, {name}님! 나이는 {age}세입니다.")
-
-
-
 
 # ✅ 6. 데이터프레임 표시
 data = {
@@ -47,18 +40,14 @@ data = {
 df = pd.DataFrame(data)
 st.dataframe(df)
 
-
 st.markdown("# Page 3 🎉")
 st.sidebar.markdown("# Page 3 🎉")
-
 
 # ✅ 7. 차트 표시
 st.line_chart(df.set_index("이름")["나이"])
 
 # st.markdown("[구글로 이동하기](https://www.google.com)")
 st.markdown('[구글로 이동하기](https://www.google.com)', unsafe_allow_html=True)
-
-
 
 # 게시글 데이터를 저장할 파일 경로
 DATA_FILE = "posts.csv"
@@ -93,6 +82,13 @@ def save_posts(posts):
 if "posts" not in st.session_state:
     st.session_state.posts = load_posts()
 
+# 페이지네이션을 위한 세션 상태 초기화
+if "page" not in st.session_state:
+    st.session_state.page = 0
+
+# 페이지당 게시글 수
+POSTS_PER_PAGE = 30
+
 # 페이지 제목
 st.title("📌 간단한 게시판")
 
@@ -122,8 +118,22 @@ if st.button("게시하기"):
 
 # 게시글 목록
 st.subheader("📋 게시글 목록")
-if st.session_state.posts:
-    for i, post in enumerate(reversed(st.session_state.posts)):
+
+# 페이지네이션 컨트롤
+total_posts = len(st.session_state.posts)
+total_pages = (total_posts // POSTS_PER_PAGE) + 1
+
+# 페이지 선택
+page_options = list(range(1, total_pages + 1))
+selected_page = st.selectbox("페이지 선택", page_options, index=st.session_state.page)
+
+# 선택된 페이지에 따라 게시글 표시
+start_idx = (selected_page - 1) * POSTS_PER_PAGE
+end_idx = start_idx + POSTS_PER_PAGE
+posts_to_display = st.session_state.posts[::-1][start_idx:end_idx]  # 최신글부터 표시
+
+if posts_to_display:
+    for i, post in enumerate(posts_to_display):
         st.markdown(f"### {post['title']}")
         st.write(post["content"])
         st.caption(f"작성일: {post['timestamp']}")
