@@ -104,7 +104,7 @@ if st.button("게시하기"):
         }
         st.session_state.posts.append(post)
         st.success("게시글이 등록되었습니다!")
-        st.experimental_rerun()
+        st.rerun()
     else:
         st.error("제목과 내용을 입력해주세요.")
 
