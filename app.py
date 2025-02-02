@@ -5,7 +5,7 @@ import webbrowser
 from PIL import Image
 import os
 from datetime import datetime
-
+import re
 
 
 # ✅ 1. 페이지 설정 (가장 먼저 위치)
@@ -67,6 +67,12 @@ st.markdown('[구글로 이동하기](https://www.google.com)', unsafe_allow_htm
 
 
 
+def extract_youtube_thumbnail(url):
+    match = re.search(r"(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)", url)
+    if match:
+        video_id = match.group(1)
+        return f"https://img.youtube.com/vi/{video_id}/0.jpg"
+    return None
 
 # 게시글 데이터를 저장할 리스트
 if 'posts' not in st.session_state:
@@ -116,16 +122,25 @@ if st.session_state.posts:
         st.write(post["content"])
         st.caption(f"작성일: {post['timestamp']}")
         
-        # 파일 다운로드 링크 표시
+        # 파일 다운로드 및 미리보기 표시
         if post["files"]:
             st.markdown("📎 첨부파일:")
             for file_path in post["files"]:
                 file_name = os.path.basename(file_path)
                 with open(file_path, "rb") as file:
                     st.download_button(label=file_name, data=file, file_name=file_name)
+                
+                # 이미지 파일 미리보기
+                if file_name.lower().endswith(('png', 'jpg', 'jpeg', 'gif', 'bmp')):
+                    image = Image.open(file_path)
+                    image = image.resize((400, 400))
+                    st.image(image, caption=file_name, use_column_width=False)
         
         # 외부 링크 표시
         if post["link"]:
+            youtube_thumbnail = extract_youtube_thumbnail(post["link"])
+            if youtube_thumbnail:
+                st.image(youtube_thumbnail, caption="YouTube 썸네일", use_column_width=False)
             st.markdown(f"🔗 [외부 링크]({post['link']})")
         
         st.divider()
