@@ -3,6 +3,9 @@ import pandas as pd
 import time
 import webbrowser
 from PIL import Image
+import os
+from datetime import datetime
+
 
 
 # ✅ 1. 페이지 설정 (가장 먼저 위치)
@@ -61,3 +64,70 @@ st.markdown('[구글로 이동하기](https://www.google.com)', unsafe_allow_htm
 
 # # 이미지 표시 (400x400 크기)
 # st.image(image, width=400, height=400)
+
+
+
+
+# 게시글 데이터를 저장할 리스트
+if 'posts' not in st.session_state:
+    st.session_state.posts = []
+
+# 파일 저장 폴더 설정
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+def save_uploaded_file(uploaded_file):
+    file_path = os.path.join(UPLOAD_FOLDER, uploaded_file.name)
+    with open(file_path, "wb") as f:
+        f.write(uploaded_file.getbuffer())
+    return file_path
+
+# 페이지 제목
+st.title("📌 간단한 게시판")
+
+# 새 글 작성
+st.subheader("새 글 작성")
+title = st.text_input("제목")
+content = st.text_area("내용")
+uploaded_files = st.file_uploader("파일 업로드", accept_multiple_files=True)
+external_link = st.text_input("추가 링크 (선택 사항)")
+
+if st.button("게시하기"):
+    if title and content:
+        file_paths = [save_uploaded_file(file) for file in uploaded_files] if uploaded_files else []
+        post = {
+            "title": title,
+            "content": content,
+            "files": file_paths,
+            "link": external_link,
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        st.session_state.posts.append(post)
+        st.success("게시글이 등록되었습니다!")
+        st.experimental_rerun()
+    else:
+        st.error("제목과 내용을 입력해주세요.")
+
+# 게시글 목록
+st.subheader("📋 게시글 목록")
+if st.session_state.posts:
+    for i, post in enumerate(reversed(st.session_state.posts)):
+        st.markdown(f"### {post['title']}")
+        st.write(post["content"])
+        st.caption(f"작성일: {post['timestamp']}")
+        
+        # 파일 다운로드 링크 표시
+        if post["files"]:
+            st.markdown("📎 첨부파일:")
+            for file_path in post["files"]:
+                file_name = os.path.basename(file_path)
+                with open(file_path, "rb") as file:
+                    st.download_button(label=file_name, data=file, file_name=file_name)
+        
+        # 외부 링크 표시
+        if post["link"]:
+            st.markdown(f"🔗 [외부 링크]({post['link']})")
+        
+        st.divider()
+else:
+    st.info("아직 게시글이 없습니다.")
