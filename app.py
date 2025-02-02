@@ -66,7 +66,6 @@ st.markdown('[구글로 이동하기](https://www.google.com)', unsafe_allow_htm
 # st.image(image, width=400, height=400)
 
 
-
 def extract_youtube_thumbnail(url):
     match = re.search(r"(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)", url)
     if match:
@@ -134,13 +133,13 @@ if st.session_state.posts:
                 if file_name.lower().endswith(('png', 'jpg', 'jpeg', 'gif', 'bmp')):
                     image = Image.open(file_path)
                     image = image.resize((400, 400))
-                    st.image(image, caption=file_name, use_column_width=False)
+                    st.image(image, caption=file_name, use_container_width=False)
         
         # 외부 링크 표시
         if post["link"]:
             youtube_thumbnail = extract_youtube_thumbnail(post["link"])
             if youtube_thumbnail:
-                st.image(youtube_thumbnail, caption="YouTube 썸네일", use_column_width=False)
+                st.image(youtube_thumbnail, caption="YouTube 썸네일", use_container_width=False)
             st.markdown(f"🔗 [외부 링크]({post['link']})")
         
         st.divider()
