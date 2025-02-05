@@ -85,8 +85,8 @@ if st.session_state.posts:
                     if file_name.lower().endswith(('png', 'jpg', 'jpeg', 'gif', 'bmp')):
                         try:
                             image = Image.open(file_path)
-                            image = image.resize((200, 200))
-                            st.image(image, caption=file_name, use_container_width=Flase)
+                            image = image.resize((100, 100))
+                            st.image(image, caption=file_name, use_container_width=True)
                         except Exception as e:
                             st.warning(f"이미지 불러오기 오류: {e}")
                 else:
