@@ -86,7 +86,7 @@ if st.session_state.posts:
                         try:
                             image = Image.open(file_path)
                             image = image.resize((400, 400))
-                            st.image(image, caption=file_name, use_container_width=False)
+                            st.image(image, caption=file_name, use_container_width=True)
                         except Exception as e:
                             st.warning(f"이미지 불러오기 오류: {e}")
                 else:
